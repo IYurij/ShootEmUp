@@ -6,27 +6,25 @@ namespace ShootEmUp
 {
     public sealed class EnemyManager : MonoBehaviour
     {
-        [SerializeField]
-        private EnemyPool _enemyPool;
-
-        [SerializeField]
-        private BulletSystem _bulletSystem;
+        [SerializeField] private EnemySpawner _enemySpawner;
+        [SerializeField] private BulletSystem _bulletSystem;
         
         private readonly HashSet<GameObject> m_activeEnemies = new();
 
-        private IEnumerator Start()
+        private void Update()
         {
-            while (true)
+            Invoke(nameof(SetEnemy), 1);
+        }
+
+        private void SetEnemy()
+        {
+            var enemy = _enemySpawner.TrySpawnEnemy();
+            if (enemy != null)
             {
-                yield return new WaitForSeconds(1);
-                var enemy = this._enemyPool.SpawnEnemy();
-                if (enemy != null)
+                if (m_activeEnemies.Add(enemy))
                 {
-                    if (this.m_activeEnemies.Add(enemy))
-                    {
-                        enemy.GetComponent<HitPointsComponent>().hpEmpty += this.OnDestroyed;
-                        enemy.GetComponent<EnemyAttackAgent>().OnFire += this.OnFire;
-                    }    
+                    enemy.GetComponent<HitPointsComponent>().hpEmpty += OnDestroyed;
+                    enemy.GetComponent<EnemyAttackAgent>().OnFire += OnFire;
                 }
             }
         }
@@ -35,10 +33,10 @@ namespace ShootEmUp
         {
             if (m_activeEnemies.Remove(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().hpEmpty -= this.OnDestroyed;
-                enemy.GetComponent<EnemyAttackAgent>().OnFire -= this.OnFire;
+                enemy.GetComponent<HitPointsComponent>().hpEmpty -= OnDestroyed;
+                enemy.GetComponent<EnemyAttackAgent>().OnFire -= OnFire;
 
-                _enemyPool.UnspawnEnemy(enemy);
+                _enemySpawner.UnspawnEnemy(enemy);
             }
         }
 
@@ -47,7 +45,7 @@ namespace ShootEmUp
             _bulletSystem.FlyBulletByArgs(new BulletSystem.Args
             {
                 isPlayer = false,
-                physicsLayer = (int) PhysicsLayer.ENEMY,
+                physicsLayer = (int) PhysicsLayer.ENEMY_BULLET,
                 color = Color.red,
                 damage = 1,
                 position = position,
