@@ -5,9 +5,6 @@ namespace ShootEmUp
 {
     public sealed class EnemyPool : MonoBehaviour
     {
-        [SerializeField] private GameObject _target;
-
-        [Header("Pool")]
         [SerializeField] private Transform _container;
         [SerializeField] private GameObject _prefab;
         [SerializeField] private int _enemiesCount = 6;
@@ -19,8 +16,9 @@ namespace ShootEmUp
             for (var i = 0; i < _enemiesCount; i++)
             {
                 var enemy = Instantiate(_prefab, _container);
-                enemy.GetComponent<EnemyAttackAgent>().SetTarget(_target);
-                this.Add(enemy);
+                enemy.SetActive(false);
+                
+                Add(enemy);
             }
         }
 

@@ -26,9 +26,9 @@ namespace ShootEmUp
             }
         }
 
-        public void FlyBulletByArgs(Args args)
+        public void SpawnBullet(Args args)
         {
-            Bullet bullet = _bulletsPool.TryGetBullet();
+            Bullet bullet = _bulletsPool.Get();
 
             bullet.SetPosition(args.position);
             bullet.SetColor(args.color);
@@ -45,7 +45,6 @@ namespace ShootEmUp
         
         private void OnBulletCollision(Bullet bullet, Collision2D collision)
         {
-            BulletUtils.DealDamage(bullet, collision.gameObject);
             RemoveBullet(bullet);
         }
 
@@ -54,11 +53,11 @@ namespace ShootEmUp
             if (m_activeBullets.Remove(bullet))
             {
                 bullet.OnCollisionEntered -= OnBulletCollision;
-                _bulletsPool.RemoveBullet(bullet);
+                _bulletsPool.Release(bullet);
             }
         }
 
-        public struct Args
+        public class Args
         {
             public Vector2 position;
             public Vector2 velocity;

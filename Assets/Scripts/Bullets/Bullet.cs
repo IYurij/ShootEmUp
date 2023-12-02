@@ -16,6 +16,7 @@ namespace ShootEmUp
         private void OnCollisionEnter2D(Collision2D collision)
         {
             OnCollisionEntered?.Invoke(this, collision);
+            DealDamage(collision.gameObject);
         }
 
         public void SetVelocity(Vector2 velocity)
@@ -36,6 +37,24 @@ namespace ShootEmUp
         public void SetColor(Color color)
         {
             _spriteRenderer.color = color;
+        }
+
+        private void DealDamage(GameObject other)
+        {
+            if (!other.TryGetComponent(out TeamComponent team))
+            {
+                return;
+            }
+
+            if (_isPlayer == team.IsPlayer)
+            {
+                return;
+            }
+
+            if (other.TryGetComponent(out HitPointsComponent hitPoints))
+            {
+                hitPoints.TakeDamage(_damage);
+            }
         }
     }
 }

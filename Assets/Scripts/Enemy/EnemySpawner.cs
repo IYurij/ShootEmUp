@@ -6,14 +6,14 @@ namespace ShootEmUp
 {
     public sealed class EnemySpawner : MonoBehaviour
     {
-        [Header("Spawn")]
-        [SerializeField] private EnemyPositions enemyPositions;
-        [SerializeField] private GameObject target;
-        [SerializeField] private EnemyPool enemyPool;
+        [SerializeField] private EnemyPositions _enemyPositions;
+        [SerializeField] private GameObject _target;
+        [SerializeField] private EnemyPool _enemyPool;
+        [SerializeField] private BulletSystem _bulletSystem;
         
         public GameObject TrySpawnEnemy()
         {
-            var enemy = enemyPool.TryRemove();
+            var enemy = _enemyPool.TryRemove();
 
             if (!enemy)
             {
@@ -23,21 +23,25 @@ namespace ShootEmUp
             return SpawnEnemy(enemy);
         }
 
-        private GameObject SpawnEnemy(GameObject enemy)
-        {
-            var spawnPosition = this.enemyPositions.RandomSpawnPosition();
-            enemy.transform.position = spawnPosition.position;
-
-            var attackPosition = this.enemyPositions.RandomAttackPosition();
-            enemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
-
-            enemy.GetComponent<EnemyAttackAgent>().SetTarget(this.target);
-            return enemy;
-        }
-
         public void UnspawnEnemy(GameObject enemy)
         {
-            enemyPool.Add(enemy);
+            enemy.SetActive(false);
+            _enemyPool.Add(enemy);
+        }
+
+        private GameObject SpawnEnemy(GameObject enemy)
+        {
+            var spawnPosition = _enemyPositions.RandomSpawnPosition();
+            enemy.transform.position = spawnPosition.position;
+
+            var attackPosition = _enemyPositions.RandomAttackPosition();
+            enemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
+
+            enemy.GetComponent<EnemyAttackAgent>().Setup(_target, _bulletSystem);
+
+            enemy.SetActive(true);
+
+            return enemy;
         }
     }
 }

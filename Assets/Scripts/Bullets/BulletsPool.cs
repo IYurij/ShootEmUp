@@ -22,7 +22,7 @@ namespace ShootEmUp
             }
         }
 
-        public Bullet TryGetBullet()
+        public Bullet Get()
         {
             if (_bulletPool.TryDequeue(out var bullet))
             {
@@ -32,7 +32,7 @@ namespace ShootEmUp
             return Add();
         }
 
-        public void RemoveBullet(Bullet bullet)
+        public void Release(Bullet bullet)
         {
             _bulletPool.Enqueue(bullet);
             bullet.gameObject.SetActive(false);
