@@ -7,9 +7,15 @@ namespace ShootEmUp
     {
         [SerializeField] private LevelBounds _levelBounds;
         [SerializeField] private BulletsPool _bulletsPool;
+        [SerializeField] private int _initialCount = 50;
 
         private readonly HashSet<Bullet> m_activeBullets = new();
         private readonly List<Bullet> m_cache = new();
+
+        private void Awake()
+        {
+            _bulletsPool.InitPool(_initialCount);
+        }
 
         private void FixedUpdate()
         {

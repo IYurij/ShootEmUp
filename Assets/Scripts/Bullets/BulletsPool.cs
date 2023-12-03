@@ -6,16 +6,14 @@ namespace ShootEmUp
 {
     public class BulletsPool : MonoBehaviour
     {
-        [SerializeField] private int _initialCount = 50;
-
         [SerializeField] private Transform _container;
         [SerializeField] private Bullet _prefab;
 
-        private readonly Queue<Bullet> _bulletPool = new();
+        private readonly Queue<Bullet> _bulletPool = new(); 
 
-        private void Awake()
+        public void InitPool(int initialCount)
         {
-            for (var i = 0; i < _initialCount; i++)
+            for (var i = 0; i < initialCount; i++)
             {
                 var bullet = Add();
                 _bulletPool.Enqueue(bullet);

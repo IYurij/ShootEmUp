@@ -7,14 +7,22 @@ namespace ShootEmUp
     public sealed class EnemyManager : MonoBehaviour
     {
         [SerializeField] private EnemySpawner _enemySpawner;
-        
+        [SerializeField] private EnemyPool _enemyPool;
+        [SerializeField] private int _enemiesCount = 6;
+
         private readonly HashSet<GameObject> m_activeEnemies = new();
+
+        private void Awake()
+        {
+            _enemyPool.InitPool(_enemiesCount);
+        }
 
         public void SetEnemy()
         {
-            var enemy = _enemySpawner.TrySpawnEnemy();
-            if (enemy != null)
+            if (m_activeEnemies.Count < _enemiesCount)
             {
+                var enemy = _enemySpawner.SpawnEnemy();
+
                 if (m_activeEnemies.Add(enemy))
                 {
                     enemy.GetComponent<HitPointsComponent>().OnHitPointsEmpty += OnDestroyed;
@@ -23,6 +31,11 @@ namespace ShootEmUp
         }
 
         private void OnDestroyed(GameObject enemy)
+        {
+            DestroyEnemy(enemy);
+        }
+
+        private void DestroyEnemy(GameObject enemy)
         {
             if (m_activeEnemies.Remove(enemy))
             {

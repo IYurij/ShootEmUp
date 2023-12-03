@@ -10,27 +10,11 @@ namespace ShootEmUp
         [SerializeField] private GameObject _target;
         [SerializeField] private EnemyPool _enemyPool;
         [SerializeField] private BulletSystem _bulletSystem;
-        
-        public GameObject TrySpawnEnemy()
+
+        public GameObject SpawnEnemy()
         {
-            var enemy = _enemyPool.TryRemove();
+            var enemy = _enemyPool.Get();
 
-            if (!enemy)
-            {
-                return null;
-            }
-
-            return SpawnEnemy(enemy);
-        }
-
-        public void UnspawnEnemy(GameObject enemy)
-        {
-            enemy.SetActive(false);
-            _enemyPool.Add(enemy);
-        }
-
-        private GameObject SpawnEnemy(GameObject enemy)
-        {
             var spawnPosition = _enemyPositions.RandomSpawnPosition();
             enemy.transform.position = spawnPosition.position;
 
@@ -42,6 +26,11 @@ namespace ShootEmUp
             enemy.SetActive(true);
 
             return enemy;
+        }
+
+        public void UnspawnEnemy(GameObject enemy)
+        {
+            _enemyPool.Release(enemy);
         }
     }
 }

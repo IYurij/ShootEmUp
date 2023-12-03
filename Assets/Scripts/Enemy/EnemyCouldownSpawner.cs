@@ -4,7 +4,7 @@ namespace ShootEmUp
 {
     public sealed class EnemyCouldownSpawner : MonoBehaviour
     {
-        [SerializeField] EnemyManager _enemyManager;
+        [SerializeField] private EnemyManager _enemyManager;
         [SerializeField] private float delay = 1;
 
         private float timer;
