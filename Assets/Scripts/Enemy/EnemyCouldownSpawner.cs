@@ -15,6 +15,7 @@ namespace ShootEmUp
             if (timer > delay)
             {
                 _enemyManager.SetEnemy();
+                timer -= delay;
             }
         }
     }

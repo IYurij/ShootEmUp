@@ -8,12 +8,13 @@ namespace ShootEmUp
     {
         [SerializeField] private Transform _container;
         [SerializeField] private Bullet _prefab;
+        [SerializeField] private int _initialCount = 50;
 
         private readonly Queue<Bullet> _bulletPool = new(); 
 
-        public void InitPool(int initialCount)
+        private void Awake()
         {
-            for (var i = 0; i < initialCount; i++)
+            for (var i = 0; i < _initialCount; i++)
             {
                 var bullet = Add();
                 _bulletPool.Enqueue(bullet);

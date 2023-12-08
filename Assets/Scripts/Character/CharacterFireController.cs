@@ -4,18 +4,16 @@ namespace ShootEmUp
 {
     public sealed class CharacterFireController : MonoBehaviour 
     {
+        [SerializeField] private FireInput _fireInput;
         [SerializeField] private GameObject _character;
         [SerializeField] private BulletSystem _bulletSystem;
         [SerializeField] private BulletConfig _bulletConfig;
 
-        public bool _fireRequired;
-
         private void FixedUpdate()
         {
-            if (_fireRequired)
+            if (_fireInput.FireRequired)
             {
                 OnFlyBullet();
-                _fireRequired = false;
             }
         }
 

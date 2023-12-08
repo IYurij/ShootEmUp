@@ -4,28 +4,22 @@ namespace ShootEmUp
 {
     public sealed class MoveInput : MonoBehaviour
     {
-        private float _horizontalDirection;
+        public float HorizontalDirection { get; private set; }
 
-        public void Move()
+        private void Update()
         {
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                _horizontalDirection = -1;
+                HorizontalDirection = -1;
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                _horizontalDirection = 1;
+                HorizontalDirection = 1;
             }
             else
             {
-                _horizontalDirection = 0;
+                HorizontalDirection = 0;
             }
-        }
-
-        public void UpdatePosition(GameObject _character)
-        {
-            _character.GetComponent<MoveComponent>()
-                      .Move(new Vector2(_horizontalDirection, 0) * Time.fixedDeltaTime);
-        }
+        } 
     }
 }

@@ -8,18 +8,12 @@ namespace ShootEmUp
     {
         [SerializeField] private EnemySpawner _enemySpawner;
         [SerializeField] private EnemyPool _enemyPool;
-        [SerializeField] private int _enemiesCount = 6;
-
+        
         private readonly HashSet<GameObject> m_activeEnemies = new();
-
-        private void Awake()
-        {
-            _enemyPool.InitPool(_enemiesCount);
-        }
 
         public void SetEnemy()
         {
-            if (m_activeEnemies.Count < _enemiesCount)
+            if (m_activeEnemies.Count < _enemyPool.EnemiesCount)
             {
                 var enemy = _enemySpawner.SpawnEnemy();
 

@@ -4,12 +4,11 @@ namespace ShootEmUp
 {
     public sealed class FireInput : MonoBehaviour
     {
-        public void Fire(CharacterFireController characterFireController)
+        public bool FireRequired { get; private set; }
+
+        private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                characterFireController._fireRequired = true;
-            }
+            FireRequired = Input.GetKeyDown(KeyCode.Space);
         }
     }
 }
