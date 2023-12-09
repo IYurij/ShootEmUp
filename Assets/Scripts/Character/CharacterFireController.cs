@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
+using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class CharacterFireController : MonoBehaviour 
+    public sealed class CharacterFireController : MonoBehaviour, IGameFixedUpdateListener 
     {
         [SerializeField] private FireInput _fireInput;
         [SerializeField] private GameObject _character;
         [SerializeField] private BulletSystem _bulletSystem;
         [SerializeField] private BulletConfig _bulletConfig;
 
-        private void FixedUpdate()
+        public void OnFixedUpdate(float fixedDeltaTime)
         {
             if (_fireInput.FireRequired)
             {

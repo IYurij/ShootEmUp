@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
+using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class FireInput : MonoBehaviour
+    public sealed class FireInput : MonoBehaviour, IGameUpdateListener
     {
         public bool FireRequired { get; private set; }
 
-        private void Update()
+        public void OnUpdate(float deltaTime)
         {
             FireRequired = Input.GetKeyDown(KeyCode.Space);
         }

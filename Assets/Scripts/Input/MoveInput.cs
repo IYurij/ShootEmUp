@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
+using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class MoveInput : MonoBehaviour
+    public sealed class MoveInput : MonoBehaviour, IGameUpdateListener
     {
         public float HorizontalDirection { get; private set; }
 
-        private void Update()
+        public void OnUpdate(float deltaTime)
         {
             if (Input.GetKey(KeyCode.LeftArrow))
             {

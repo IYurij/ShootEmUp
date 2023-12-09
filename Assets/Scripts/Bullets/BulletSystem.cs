@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class BulletSystem : MonoBehaviour
+    public sealed class BulletSystem : MonoBehaviour, IGameFixedUpdateListener
     {
         [SerializeField] private LevelBounds _levelBounds;
         [SerializeField] private BulletsPool _bulletsPool;
@@ -11,7 +12,7 @@ namespace ShootEmUp
         private readonly HashSet<Bullet> m_activeBullets = new();
         private readonly List<Bullet> m_cache = new();
 
-        private void FixedUpdate()
+        public void OnFixedUpdate(float fixedDeltaTime)
         {
             m_cache.Clear();
             m_cache.AddRange(m_activeBullets);
