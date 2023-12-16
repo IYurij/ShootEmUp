@@ -1,12 +1,13 @@
-using System;
 using UnityEngine;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class LevelBackground : MonoBehaviour, IGameFixedUpdateListener
+    public sealed class LevelBackground : MonoBehaviour,
+        IGameFixedUpdateListener
     {
-        [SerializeField] private Params m_params;
+        [SerializeField] private LevelBackgroundParams _levelBackGroundParams;
+        [SerializeField] private GameManager _gameManager;
 
         private Transform _myTransform;
         private float _startPositionY;
@@ -17,13 +18,15 @@ namespace ShootEmUp
 
         private void Awake()
         {
-            _startPositionY = m_params.m_startPositionY;
-            _endPositionY = m_params.m_endPositionY;
-            _movingSpeedY = m_params.m_movingSpeedY;
+            _startPositionY = _levelBackGroundParams._startPositionY;
+            _endPositionY = _levelBackGroundParams._endPositionY;
+            _movingSpeedY = _levelBackGroundParams._movingSpeedY;
             _myTransform = transform;
             var position = _myTransform.position;
             _positionX = position.x;
             _positionZ = position.z;
+
+            _gameManager.AddListener(GetComponent<IGameListener>());
         }
 
         public void OnFixedUpdate(float fixedDeltaTime)
@@ -42,16 +45,6 @@ namespace ShootEmUp
                 _movingSpeedY * fixedDeltaTime,
                 _positionZ
             );
-        }
-
-        [Serializable]
-        public sealed class Params
-        {
-            [SerializeField] public float m_startPositionY;
-
-            [SerializeField] public float m_endPositionY;
-
-            [SerializeField] public float m_movingSpeedY;
         }
     }
 }

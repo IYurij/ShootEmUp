@@ -4,10 +4,12 @@ using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class BulletSystem : MonoBehaviour, IGameFixedUpdateListener
+    public sealed class BulletSystem : MonoBehaviour, 
+        IGameFixedUpdateListener
     {
         [SerializeField] private LevelBounds _levelBounds;
         [SerializeField] private BulletsPool _bulletsPool;
+        [SerializeField] private GameManager _gameManager;
 
         private readonly HashSet<Bullet> m_activeBullets = new();
         private readonly List<Bullet> m_cache = new();
@@ -20,6 +22,7 @@ namespace ShootEmUp
             for (int i = 0, count = m_cache.Count; i < count; i++)
             {
                 var bullet = m_cache[i];
+                
                 if (!_levelBounds.InBounds(bullet.transform.position))
                 {
                     RemoveBullet(bullet);
@@ -27,7 +30,7 @@ namespace ShootEmUp
             }
         }
 
-        public void SpawnBullet(Args args)
+        public void SpawnBullet(BulletArgs args)
         {
             Bullet bullet = _bulletsPool.Get();
 
@@ -37,9 +40,10 @@ namespace ShootEmUp
             bullet._damage = args.damage;
             bullet._isPlayer = args.isPlayer;
             bullet.SetVelocity(args.velocity);
-            
+
             if (m_activeBullets.Add(bullet))
             {
+                _gameManager.AddListeners(bullet.GetComponentsInChildren<IGameListener>());
                 bullet.OnCollisionEntered += OnBulletCollision;
             }
         }
@@ -53,19 +57,10 @@ namespace ShootEmUp
         {
             if (m_activeBullets.Remove(bullet))
             {
+                _gameManager.RemoveListeners(bullet.GetComponentsInChildren<IGameListener>());
                 bullet.OnCollisionEntered -= OnBulletCollision;
                 _bulletsPool.Release(bullet);
             }
-        }
-
-        public class Args
-        {
-            public Vector2 position;
-            public Vector2 velocity;
-            public Color color;
-            public int physicsLayer;
-            public int damage;
-            public bool isPlayer;
         }
     }
 }

@@ -11,9 +11,9 @@ namespace ShootEmUp
         }
 
         [SerializeField] private MoveComponent _moveComponent;
+        [SerializeField] private float _moveThreshold = 0.25f;
 
         private Vector2 _destination;
-
         private bool _isReached;
 
         public void SetDestination(Vector2 endPoint)
@@ -30,7 +30,7 @@ namespace ShootEmUp
             }
             
             var vector = _destination - (Vector2)transform.position;
-            if (vector.magnitude <= 0.25f)
+            if (vector.sqrMagnitude <= _moveThreshold * _moveThreshold)
             {
                 _isReached = true;
                 return;

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace ShootEmUp
         [SerializeField] private Bullet _prefab;
         [SerializeField] private int _initialCount = 50;
 
-        private readonly Queue<Bullet> _bulletPool = new(); 
+        private readonly Queue<Bullet> _bulletPool = new();
 
         private void Awake()
         {

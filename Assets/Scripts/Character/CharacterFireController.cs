@@ -3,26 +3,42 @@ using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class CharacterFireController : MonoBehaviour, IGameFixedUpdateListener 
+    public sealed class CharacterFireController : MonoBehaviour, 
+        IGameStartListener, 
+        IGamePauseListener, 
+        IGameResumeListener,
+        IGameFinishListener
     {
         [SerializeField] private FireInput _fireInput;
         [SerializeField] private GameObject _character;
         [SerializeField] private BulletSystem _bulletSystem;
         [SerializeField] private BulletConfig _bulletConfig;
 
-        public void OnFixedUpdate(float fixedDeltaTime)
+        public void OnStart()
         {
-            if (_fireInput.FireRequired)
-            {
-                OnFlyBullet();
-            }
+            _fireInput.OnFire += Fire;
         }
 
-        private void OnFlyBullet()
+        public void OnPause()
+        {
+            _fireInput.OnFire -= Fire;
+        }
+
+        public void OnResume()
+        {
+            _fireInput.OnFire += Fire;
+        }
+
+        public void OnFinish()
+        {
+            _fireInput.OnFire -= Fire;
+        }
+
+        private void Fire()
         {
             var weapon = _character.GetComponent<WeaponComponent>();
 
-            _bulletSystem.SpawnBullet(new BulletSystem.Args
+            _bulletSystem.SpawnBullet(new BulletArgs
             {
                 isPlayer = true,
                 physicsLayer = (int) _bulletConfig.physicsLayer,

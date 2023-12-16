@@ -6,15 +6,20 @@ namespace ShootEmUp
     [RequireComponent(typeof(GameManager))]
     public class GameManagerInstaller : MonoBehaviour
     {
+        [SerializeField] private GameObject[] _managementObjects;
+
         private void Awake()
         {
             var manager = GetComponent<GameManager>();
-            
-            var listeners = GetComponentsInChildren<IGameListener>(true);
 
-            foreach (var listener in listeners)
+            foreach (var go in _managementObjects)
             {
-                manager.AddListener(listener);
+                var listeners = go.GetComponentsInChildren<IGameListener>(true);
+
+                foreach (var listener in listeners)
+                {
+                    manager.AddListener(listener);
+                }
             }
         }
     }
