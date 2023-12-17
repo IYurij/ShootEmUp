@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace ShootEmUp
 {
-    public class GameLauncher : MonoBehaviour
+    public class GameCountableLauncher : MonoBehaviour
     {
         [SerializeField] private GameManager _gameManager;
         [SerializeField] private Button _startButton;
