@@ -13,15 +13,6 @@ namespace ShootEmUp
 
         private readonly Queue<GameObject> _enemyPool = new();
 
-        private void Awake()
-        {
-            for (var i = 0; i < _enemiesCount; i++)
-            {
-                var enemy = Add();
-                _enemyPool.Enqueue(enemy);
-            }
-        }
-
         public GameObject Get()
         {
             if (_enemyPool.TryDequeue(out var enemy))

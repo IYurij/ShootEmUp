@@ -1,9 +1,12 @@
 using System;
 using UnityEngine;
+using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class Bullet : MonoBehaviour
+    public sealed class Bullet : MonoBehaviour,
+        IGamePauseListener,
+        IGameResumeListener
     {
         public event Action<Bullet, Collision2D> OnCollisionEntered;
 
@@ -13,15 +16,32 @@ namespace ShootEmUp
         [SerializeField] private Rigidbody2D _rigidbody2D;
         [SerializeField] private SpriteRenderer _spriteRenderer;
 
+        private Vector3 _pausedVelocity;
+        private float _pausedAngularVelocity;
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
             OnCollisionEntered?.Invoke(this, collision);
             DealDamage(collision.gameObject);
         }
 
+        public void OnPause()
+        {
+            _pausedAngularVelocity = _rigidbody2D.angularVelocity;
+            _rigidbody2D.bodyType = RigidbodyType2D.Static;
+        }
+
+        public void OnResume()
+        {
+            _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+            _rigidbody2D.velocity = _pausedVelocity;
+            _rigidbody2D.angularVelocity = _pausedAngularVelocity;
+        }
+
         public void SetVelocity(Vector2 velocity)
         {
             _rigidbody2D.velocity = velocity;
+            _pausedVelocity = velocity;
         }
 
         public void SetPhysicsLayer(int physicsLayer)
@@ -50,9 +70,10 @@ namespace ShootEmUp
             {
                 return;
             }
-
+            
             if (other.TryGetComponent(out HitPointsComponent hitPoints))
             {
+                
                 hitPoints.TakeDamage(_damage);
             }
         }

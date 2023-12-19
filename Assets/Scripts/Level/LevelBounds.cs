@@ -17,10 +17,10 @@ namespace ShootEmUp
             var positionX = position.x;
             var positionY = position.y;
 
-            return positionX > this._leftBorder.position.x
-                   && positionX < this._rightBorder.position.x
-                   && positionY > this._downBorder.position.y
-                   && positionY < this._topBorder.position.y;
+            return positionX > _leftBorder.position.x
+                   && positionX < _rightBorder.position.x
+                   && positionY > _downBorder.position.y
+                   && positionY < _topBorder.position.y;
         }
     }
 }

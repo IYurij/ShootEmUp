@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
@@ -22,8 +21,6 @@ namespace ShootEmUp
             enemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
 
             enemy.GetComponent<EnemyAttackAgent>().Setup(_target, _bulletSystem);
-
-            enemy.SetActive(true);
 
             return enemy;
         }

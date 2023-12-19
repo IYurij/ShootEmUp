@@ -1,14 +1,14 @@
 using UnityEngine;
+using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyAttackAgent : MonoBehaviour
+    public sealed class EnemyAttackAgent : MonoBehaviour, 
+        IGameFixedUpdateListener
     {
         [SerializeField] private WeaponComponent _weaponComponent;
         [SerializeField] private EnemyMoveAgent _moveAgent;
         [SerializeField] private float _countdown;
-
-        public delegate void FireHandler(GameObject enemy, Vector2 position, Vector2 direction);
 
         private BulletSystem _bulletSystem;
         private GameObject _target;
@@ -25,19 +25,19 @@ namespace ShootEmUp
             _currentTime = _countdown;
         }
 
-        private void FixedUpdate()
+        public void OnFixedUpdate(float fixedDeltaTime)
         {
             if (!_moveAgent.IsReached)
             {
                 return;
             }
-            
+
             if (!_target.GetComponent<HitPointsComponent>().IsHitPointsExists())
             {
                 return;
             }
 
-            _currentTime -= Time.fixedDeltaTime;
+            _currentTime -= fixedDeltaTime;
             if (_currentTime <= 0)
             {
                 Fire();
@@ -55,7 +55,7 @@ namespace ShootEmUp
 
         private void OnFire(Vector2 position, Vector2 direction)
         {
-            _bulletSystem.SpawnBullet(new BulletSystem.Args
+            _bulletSystem.SpawnBullet(new BulletArgs
             {
                 isPlayer = false,
                 physicsLayer = (int)PhysicsLayer.ENEMY_BULLET,

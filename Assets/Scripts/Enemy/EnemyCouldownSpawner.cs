@@ -1,21 +1,23 @@
 ﻿using UnityEngine;
+using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
     public sealed class EnemyCouldownSpawner : MonoBehaviour
+        , IGameUpdateListener
     {
         [SerializeField] private EnemyManager _enemyManager;
-        [SerializeField] private float delay = 1;
+        [SerializeField] private float _delay = 1;
 
-        private float timer;
+        private float _timer;
 
-        private void Update()
+        public void OnUpdate(float deltaTime)
         {
-            timer += Time.deltaTime;
-            if (timer > delay)
+            _timer += deltaTime;
+            if (_timer > _delay)
             {
-                _enemyManager.SetEnemy();
-                timer -= delay;
+                _enemyManager.SpawnEnemy();
+                _timer -= _delay;
             }
         }
     }
