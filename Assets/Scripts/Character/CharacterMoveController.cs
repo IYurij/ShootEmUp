@@ -1,12 +1,20 @@
 using UnityEngine;
+using VContainer;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
     public class CharacterMoveController : MonoBehaviour, IGameFixedUpdateListener
     {
-        [SerializeField] private MoveInput _moveInput;
-        [SerializeField] private GameObject _character;
+        private MoveInput _moveInput;
+        private GameObject _character;
+
+        [Inject]
+        private void Construct(GameObject character, MoveInput moveInput)
+        {
+            _character = character;
+            _moveInput = moveInput;
+        }
 
         public void OnFixedUpdate(float fixedDeltaTime)
         {

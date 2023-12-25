@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace ShootEmUp
 {
@@ -8,10 +10,17 @@ namespace ShootEmUp
         [SerializeField] private Transform _container;
         [SerializeField] private GameObject _prefab;
         [SerializeField] private int _enemiesCount = 6;
+        private IObjectResolver _resolver;
 
         public int EnemiesCount => _enemiesCount;
 
         private readonly Queue<GameObject> _enemyPool = new();
+
+        [Inject]
+        private void Construct(IObjectResolver resolver)
+        {
+            _resolver = resolver;
+        }
 
         public GameObject Get()
         {
@@ -31,7 +40,7 @@ namespace ShootEmUp
 
         private GameObject Add()
         {
-            var enemy = Instantiate(_prefab, _container);
+            var enemy = _resolver.Instantiate(_prefab, _container);
             enemy.SetActive(false);
 
             return enemy;

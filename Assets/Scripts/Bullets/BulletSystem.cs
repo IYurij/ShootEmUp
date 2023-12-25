@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
@@ -8,11 +9,18 @@ namespace ShootEmUp
         IGameFixedUpdateListener
     {
         [SerializeField] private LevelBounds _levelBounds;
-        [SerializeField] private BulletsPool _bulletsPool;
-        [SerializeField] private GameManager _gameManager;
+        private BulletsPool _bulletsPool;
+        private GameManager _gameManager;
 
         private readonly HashSet<Bullet> m_activeBullets = new();
         private readonly List<Bullet> m_cache = new();
+
+        [Inject]
+        private void Construct(GameManager gameManager, BulletsPool bulletsPool)
+        {
+            _gameManager = gameManager;
+            _bulletsPool = bulletsPool;
+        }
 
         public void OnFixedUpdate(float fixedDeltaTime)
         {

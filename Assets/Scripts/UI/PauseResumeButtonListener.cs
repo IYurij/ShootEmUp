@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
@@ -8,9 +9,15 @@ namespace ShootEmUp
         IGameStartListener,
         IGameFinishListener
     {
-        [SerializeField] private GameManager _gameManager;
+        private GameManager _gameManager;
         [SerializeField] private Button _pauseButton;
         [SerializeField] private Button _resumeButton;
+
+        [Inject]
+        private void Construct(GameManager gameManager)
+        {
+            _gameManager = gameManager;
+        }
 
         public void OnStart()
         {

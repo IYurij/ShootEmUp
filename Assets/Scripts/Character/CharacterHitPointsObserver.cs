@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
@@ -7,9 +8,16 @@ namespace ShootEmUp
         IGameStartListener,
         IGameFinishListener
     {
-        [SerializeField] private GameObject _character;
-        [SerializeField] private GameManager _gameManager;
-        
+        private GameObject _character;
+        private GameManager _gameManager;
+
+        [Inject]
+        private void Construct(GameObject character, GameManager gameManager)
+        {
+            _character = character;
+            _gameManager = gameManager;
+        }
+
         public void OnStart()
         {
             _character.GetComponent<HitPointsComponent>().OnHitPointsEmpty += OnCharacterDeath;
