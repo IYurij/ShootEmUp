@@ -9,9 +9,10 @@ namespace ShootEmUp
         IGameStartListener,
         IGameFinishListener
     {
-        private GameManager _gameManager;
         [SerializeField] private Button _pauseButton;
         [SerializeField] private Button _resumeButton;
+
+        private GameManager _gameManager;
 
         [Inject]
         private void Construct(GameManager gameManager)

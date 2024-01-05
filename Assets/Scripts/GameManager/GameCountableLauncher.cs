@@ -8,10 +8,11 @@ namespace ShootEmUp
 {
     public class GameCountableLauncher : MonoBehaviour, IInitializable
     {
-        private GameManager _gameManager;
         [SerializeField] private Button _startButton;
         [SerializeField] private Text _countDownText;
         [SerializeField] private int _initCountValue = 3;
+
+        private GameManager _gameManager;
 
         [Inject]
         private void Construct(GameManager gameManager)

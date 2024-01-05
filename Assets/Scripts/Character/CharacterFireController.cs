@@ -1,30 +1,28 @@
 ﻿using UnityEngine;
-using VContainer;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class CharacterFireController : MonoBehaviour,
+    public sealed class CharacterFireController :
         IGameStartListener, 
         IGamePauseListener, 
         IGameResumeListener,
         IGameFinishListener
     {
-        private FireInput _fireInput;
-        private GameObject _character;
-        private BulletSystem _bulletSystem;
-        [SerializeField] private BulletConfig _bulletConfig;
+        private readonly FireInput _fireInput;
+        private readonly GameObject _character;
+        private readonly BulletSystem _bulletSystem;
+        private readonly BulletConfig _bulletConfig;
 
-        [Inject]
-        private void Construct(GameObject character,
+        public CharacterFireController(GameObject character,
             FireInput fireInput,
-            BulletSystem bulletSystem)
-            //BulletConfig bulletConfig)
+            BulletSystem bulletSystem,
+            BulletConfig bulletConfig)
         {
             _character = character;
             _fireInput = fireInput;
             _bulletSystem = bulletSystem;
-            //_bulletConfig = bulletConfig;
+            _bulletConfig = bulletConfig;
         }
 
         public void OnStart()

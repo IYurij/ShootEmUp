@@ -10,10 +10,9 @@ namespace ShootEmUp
         [SerializeField] private Transform _container;
         [SerializeField] private GameObject _prefab;
         [SerializeField] private int _enemiesCount = 6;
-        private IObjectResolver _resolver;
-
         public int EnemiesCount => _enemiesCount;
 
+        private IObjectResolver _resolver;
         private readonly Queue<GameObject> _enemyPool = new();
 
         [Inject]

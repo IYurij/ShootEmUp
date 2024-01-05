@@ -1,19 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
-using VContainer;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
     public sealed class EnemyManager
     {
-        private EnemySpawner _enemySpawner;
-        private EnemyPool _enemyPool;
-        private GameManager _gameManager;
+        private readonly EnemySpawner _enemySpawner;
+        private readonly EnemyPool _enemyPool;
+        private readonly GameManager _gameManager;
         
         private readonly HashSet<GameObject> _activeEnemies = new();
-
-        [Inject]
+        
         public EnemyManager(GameManager gameManager, EnemyPool enemyPool, EnemySpawner enemySpawner)
         {
             _gameManager = gameManager;

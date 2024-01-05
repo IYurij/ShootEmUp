@@ -9,14 +9,12 @@ namespace ShootEmUp
         [SerializeField] private EnemyPositions _enemyPositions;
         private GameObject _target;
         private EnemyPool _enemyPool;
-        private BulletSystem _bulletSystem;
 
         [Inject]
-        private void Construct(GameObject target, EnemyPool enemyPool, BulletSystem bulletSystem)
+        private void Construct(GameObject target, EnemyPool enemyPool)
         {
             _target = target;
             _enemyPool = enemyPool;
-            _bulletSystem = bulletSystem;
         }
 
         public GameObject SpawnEnemy()
@@ -29,7 +27,7 @@ namespace ShootEmUp
             var attackPosition = _enemyPositions.RandomAttackPosition();
             enemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
 
-            enemy.GetComponent<EnemyAttackAgent>().Setup(_target, _bulletSystem);
+            enemy.GetComponent<EnemyAttackAgent>().Setup(_target);
 
             return enemy;
         }

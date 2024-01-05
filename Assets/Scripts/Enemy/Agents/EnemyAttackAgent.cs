@@ -15,16 +15,15 @@ namespace ShootEmUp
         private GameObject _target;
         private float _currentTime;
 
-        //[Inject]
-        //private void Construct(GameObject target)
-        //{
-        //    _target = target;
-        //}
+        [Inject]
+        private void Construct(BulletSystem bulletSystem)
+        {
+            _bulletSystem = bulletSystem;
+        }
 
-        public void Setup(GameObject target, BulletSystem bulletSystem)
+        public void Setup(GameObject target)
         {
             _target = target;
-            _bulletSystem = bulletSystem;
         }
 
         public void Reset()

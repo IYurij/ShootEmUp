@@ -1,18 +1,16 @@
 using UnityEngine;
-using VContainer;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class CharacterHitPointsObserver : MonoBehaviour,
+    public sealed class CharacterHitPointsObserver :
         IGameStartListener,
         IGameFinishListener
     {
-        private GameObject _character;
-        private GameManager _gameManager;
-
-        [Inject]
-        private void Construct(GameObject character, GameManager gameManager)
+        private readonly GameObject _character;
+        private readonly GameManager _gameManager;
+ 
+        public CharacterHitPointsObserver(GameObject character, GameManager gameManager)
         {
             _character = character;
             _gameManager = gameManager;

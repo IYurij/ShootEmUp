@@ -9,7 +9,7 @@ namespace ShootEmUp
         IGameFixedUpdateListener,
         IInitializable
     {
-        [SerializeField] private LevelBackgroundParams _levelBackGroundParams;
+        private LevelBackgroundParams _levelBackGroundParams;
         private GameManager _gameManager;
 
         private Transform _myTransform;
@@ -20,9 +20,10 @@ namespace ShootEmUp
         private float _positionZ;
 
         [Inject]
-        private void Construct(GameManager gameManager)
+        private void Construct(GameManager gameManager, LevelBackgroundParams levelBackgroundParams)
         {
             _gameManager = gameManager;
+            _levelBackGroundParams = levelBackgroundParams;
         }
 
         public void Initialize()

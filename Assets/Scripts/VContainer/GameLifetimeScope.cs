@@ -8,11 +8,11 @@ using VContainer.Unity;
 public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] private GameObject _characterPrefab;
-    //[SerializeField] private BulletConfig _bulletConfig;
+    [SerializeField] private BulletConfig _bulletConfig; 
 
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterComponentInHierarchy<GameManager>().AsSelf();
+        builder.Register<GameManager>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf(); 
 
         builder.Register(_ =>
         {
@@ -24,23 +24,24 @@ public class GameLifetimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<GameCountableLauncher>().AsImplementedInterfaces().AsSelf();
         builder.RegisterComponentInHierarchy<LevelBackground>().AsImplementedInterfaces().AsSelf();
-        builder.RegisterComponentInHierarchy<MoveInput>().AsImplementedInterfaces().AsSelf();
-        builder.RegisterComponentInHierarchy<FireInput>().AsImplementedInterfaces().AsSelf();
+        builder.Register<LevelBackgroundParams>(Lifetime.Transient);
 
+        builder.RegisterInstance(_bulletConfig);
+
+        builder.Register<EnemyMoveAgent>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
         builder.RegisterComponentInHierarchy<EnemyPool>().AsImplementedInterfaces().AsSelf();
         builder.RegisterComponentInHierarchy<EnemySpawner>().AsImplementedInterfaces().AsSelf();
-        builder.Register<EnemyManager>(Lifetime.Singleton).AsSelf();
+        builder.Register<EnemyManager>(Lifetime.Singleton);
+        builder.Register<EnemyCouldownSpawner>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
 
-        builder.Register<CharacterHitPointsObserver>(Lifetime.Singleton).AsImplementedInterfaces();
-        //builder.Register<CharacterFireController>(Lifetime.Singleton).AsImplementedInterfaces();
-        builder.Register<CharacterMoveController>(Lifetime.Singleton).AsImplementedInterfaces();
+        builder.Register<FireInput>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+        builder.Register<MoveInput>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+
+        builder.Register<CharacterHitPointsObserver>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+        builder.Register<CharacterFireController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+        builder.Register<CharacterMoveController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
 
         builder.RegisterComponentInHierarchy<BulletsPool>().AsImplementedInterfaces().AsSelf();
         builder.RegisterComponentInHierarchy<BulletSystem>().AsImplementedInterfaces().AsSelf();
-        //builder.RegisterInstance(_bulletConfig.physicsLayer);
-        //builder.RegisterInstance(_bulletConfig.color);
-        //builder.RegisterInstance(_bulletConfig.damage);
-        //builder.RegisterInstance(_bulletConfig.speed);
-
     }
 }
