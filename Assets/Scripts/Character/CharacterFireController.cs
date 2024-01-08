@@ -3,16 +3,27 @@ using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class CharacterFireController : MonoBehaviour, 
+    public sealed class CharacterFireController :
         IGameStartListener, 
         IGamePauseListener, 
         IGameResumeListener,
         IGameFinishListener
     {
-        [SerializeField] private FireInput _fireInput;
-        [SerializeField] private GameObject _character;
-        [SerializeField] private BulletSystem _bulletSystem;
-        [SerializeField] private BulletConfig _bulletConfig;
+        private readonly FireInput _fireInput;
+        private readonly GameObject _character;
+        private readonly BulletSystem _bulletSystem;
+        private readonly BulletConfig _bulletConfig;
+
+        public CharacterFireController(GameObject character,
+            FireInput fireInput,
+            BulletSystem bulletSystem,
+            BulletConfig bulletConfig)
+        {
+            _character = character;
+            _fireInput = fireInput;
+            _bulletSystem = bulletSystem;
+            _bulletConfig = bulletConfig;
+        }
 
         public void OnStart()
         {
@@ -39,7 +50,7 @@ namespace ShootEmUp
             var weapon = _character.GetComponent<WeaponComponent>();
 
             _bulletSystem.SpawnBullet(new BulletArgs
-            {
+            { 
                 isPlayer = true,
                 physicsLayer = (int) _bulletConfig.physicsLayer,
                 color = _bulletConfig.color,

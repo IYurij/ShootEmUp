@@ -3,13 +3,19 @@ using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class CharacterHitPointsObserver : MonoBehaviour,
+    public sealed class CharacterHitPointsObserver :
         IGameStartListener,
         IGameFinishListener
     {
-        [SerializeField] private GameObject _character;
-        [SerializeField] private GameManager _gameManager;
-        
+        private readonly GameObject _character;
+        private readonly GameManager _gameManager;
+ 
+        public CharacterHitPointsObserver(GameObject character, GameManager gameManager)
+        {
+            _character = character;
+            _gameManager = gameManager;
+        }
+
         public void OnStart()
         {
             _character.GetComponent<HitPointsComponent>().OnHitPointsEmpty += OnCharacterDeath;

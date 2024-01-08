@@ -4,7 +4,7 @@ using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class FireInput : MonoBehaviour, IGameUpdateListener
+    public sealed class FireInput : IGameUpdateListener
     {
         public event Action OnFire;
 

@@ -3,15 +3,21 @@ using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public class CharacterMoveController : MonoBehaviour, IGameFixedUpdateListener
+    public class CharacterMoveController : IGameFixedUpdateListener
     {
-        [SerializeField] private MoveInput _moveInput;
-        [SerializeField] private GameObject _character;
+        private readonly MoveInput _moveInput;
+        private readonly GameObject _character;
+        
+        public CharacterMoveController(GameObject character, MoveInput moveInput)
+        {
+            _character = character;
+            _moveInput = moveInput;
+        }
 
         public void OnFixedUpdate(float fixedDeltaTime)
         {
             _character.GetComponent<MoveComponent>()
-                      .Move(new Vector2(_moveInput.Horizontal, 0) * Time.fixedDeltaTime);
+                      .Move(new Vector2(_moveInput.Horizontal, 0) * fixedDeltaTime);
         }
     }
 }

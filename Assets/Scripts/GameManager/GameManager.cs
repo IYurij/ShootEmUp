@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class GameManager : MonoBehaviour
+    public sealed class GameManager : ITickable, IFixedTickable
     {
         private readonly List<IGameListener> _listeners = new();
         private readonly List<IGameUpdateListener> _updateListeners = new();
@@ -13,20 +15,20 @@ namespace ShootEmUp
 
         private GameState _gameState = GameState.OFF;
 
-        private void FixedUpdate()
+        public void FixedTick()
         {
             if (_gameState != GameState.PLAYING)
             {
                 return;
             }
-
+             
             for (var i = 0; i < _fixedUpdateListeners.Count; i++)
             {
                 _fixedUpdateListeners[i].OnFixedUpdate(Time.fixedDeltaTime);
             }
         }
 
-        private void Update()
+        public void Tick()
         {
             if (_gameState != GameState.PLAYING) 
             {
@@ -50,7 +52,7 @@ namespace ShootEmUp
         public void AddListener(IGameListener gameListener)
         {
             _listeners.Add(gameListener);
-
+            
             if (gameListener is IGameUpdateListener gameUpdateListener)
             {
                 _updateListeners.Add(gameUpdateListener);

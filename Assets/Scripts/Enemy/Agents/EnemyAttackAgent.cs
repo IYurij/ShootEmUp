@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
@@ -14,10 +15,15 @@ namespace ShootEmUp
         private GameObject _target;
         private float _currentTime;
 
-        public void Setup(GameObject target, BulletSystem bulletSystem)
+        [Inject]
+        private void Construct(BulletSystem bulletSystem)
+        {
+            _bulletSystem = bulletSystem;
+        }
+
+        public void Setup(GameObject target)
         {
             _target = target;
-            _bulletSystem = bulletSystem;
         }
 
         public void Reset()

@@ -1,17 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace ShootEmUp
 {
-    public class BulletsPool : MonoBehaviour
+    public class BulletsPool : MonoBehaviour, IInitializable
     {
         [SerializeField] private Transform _container;
         [SerializeField] private Bullet _prefab;
         [SerializeField] private int _initialCount = 50;
 
+        private IObjectResolver _resolver;
         private readonly Queue<Bullet> _bulletPool = new();
 
-        private void Awake()
+        [Inject]
+        private void Construct(IObjectResolver resolver)
+        {
+            _resolver = resolver;
+        }
+
+        public void Initialize()
         {
             for (var i = 0; i < _initialCount; i++)
             {
@@ -38,7 +47,7 @@ namespace ShootEmUp
 
         private Bullet Add()
         {
-            Bullet bullet = Instantiate(_prefab, _container);
+            Bullet bullet = _resolver.Instantiate(_prefab, _container);
             bullet.gameObject.SetActive(true);
 
             return bullet;

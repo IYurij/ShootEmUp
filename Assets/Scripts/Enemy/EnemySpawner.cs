@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
@@ -6,9 +7,15 @@ namespace ShootEmUp
     public sealed class EnemySpawner : MonoBehaviour
     {
         [SerializeField] private EnemyPositions _enemyPositions;
-        [SerializeField] private GameObject _target;
-        [SerializeField] private EnemyPool _enemyPool;
-        [SerializeField] private BulletSystem _bulletSystem;
+        private GameObject _target;
+        private EnemyPool _enemyPool;
+
+        [Inject]
+        private void Construct(GameObject target, EnemyPool enemyPool)
+        {
+            _target = target;
+            _enemyPool = enemyPool;
+        }
 
         public GameObject SpawnEnemy()
         {
@@ -20,7 +27,7 @@ namespace ShootEmUp
             var attackPosition = _enemyPositions.RandomAttackPosition();
             enemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
 
-            enemy.GetComponent<EnemyAttackAgent>().Setup(_target, _bulletSystem);
+            enemy.GetComponent<EnemyAttackAgent>().Setup(_target);
 
             return enemy;
         }

@@ -1,13 +1,16 @@
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
     public sealed class LevelBackground : MonoBehaviour,
-        IGameFixedUpdateListener
+        IGameFixedUpdateListener,
+        IInitializable
     {
-        [SerializeField] private LevelBackgroundParams _levelBackGroundParams;
-        [SerializeField] private GameManager _gameManager;
+        private LevelBackgroundParams _levelBackGroundParams;
+        private GameManager _gameManager;
 
         private Transform _myTransform;
         private float _startPositionY;
@@ -16,7 +19,14 @@ namespace ShootEmUp
         private float _positionX;
         private float _positionZ;
 
-        private void Awake()
+        [Inject]
+        private void Construct(GameManager gameManager, LevelBackgroundParams levelBackgroundParams)
+        {
+            _gameManager = gameManager;
+            _levelBackGroundParams = levelBackgroundParams;
+        }
+
+        public void Initialize()
         {
             _startPositionY = _levelBackGroundParams._startPositionY;
             _endPositionY = _levelBackGroundParams._endPositionY;

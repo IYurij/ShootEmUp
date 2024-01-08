@@ -1,17 +1,26 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
+using VContainer.Unity;
 
 namespace ShootEmUp
 {
-    public class GameCountableLauncher : MonoBehaviour
+    public class GameCountableLauncher : MonoBehaviour, IInitializable
     {
-        [SerializeField] private GameManager _gameManager;
         [SerializeField] private Button _startButton;
         [SerializeField] private Text _countDownText;
         [SerializeField] private int _initCountValue = 3;
 
-        private void Awake()
+        private GameManager _gameManager;
+
+        [Inject]
+        private void Construct(GameManager gameManager)
+        {
+            _gameManager = gameManager;
+        }
+
+        public void Initialize()
         {
             _countDownText.gameObject.SetActive(false);
 

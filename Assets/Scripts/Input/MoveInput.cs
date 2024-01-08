@@ -3,7 +3,7 @@ using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class MoveInput : MonoBehaviour, IGameUpdateListener
+    public sealed class MoveInput : IGameUpdateListener
     {
         public float Horizontal { get; private set; }
 

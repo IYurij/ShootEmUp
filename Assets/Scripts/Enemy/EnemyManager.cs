@@ -4,13 +4,20 @@ using static ShootEmUp.Listeners;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyManager : MonoBehaviour
+    public sealed class EnemyManager
     {
-        [SerializeField] private EnemySpawner _enemySpawner;
-        [SerializeField] private EnemyPool _enemyPool;
-        [SerializeField] private GameManager _gameManager;
+        private readonly EnemySpawner _enemySpawner;
+        private readonly EnemyPool _enemyPool;
+        private readonly GameManager _gameManager;
         
         private readonly HashSet<GameObject> _activeEnemies = new();
+        
+        public EnemyManager(GameManager gameManager, EnemyPool enemyPool, EnemySpawner enemySpawner)
+        {
+            _gameManager = gameManager;
+            _enemyPool = enemyPool;
+            _enemySpawner = enemySpawner;
+        }
 
         public void SpawnEnemy()
         {
